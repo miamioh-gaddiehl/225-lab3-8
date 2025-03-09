@@ -43,7 +43,8 @@ kind: Service
 metadata:
   name: mongo-express-service
 spec:
-  type: 
+  type: LoadBalancer
+  loadBalancerIP: 10.48.10.133
   ports:
   - protocol: TCP
     port: 80
