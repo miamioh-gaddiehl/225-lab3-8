@@ -41,13 +41,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-express-service
+  name: mongoexpress-service
 spec:
   type: LoadBalancer
   loadBalancerIP: 10.48.10.133
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8081
+    - protocol: TCP
+      port: 8081
+      targetPort: 80
   selector:
-    app: mongo-express
+    app: mongoexpress
