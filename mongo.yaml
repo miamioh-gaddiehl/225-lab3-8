@@ -1,51 +1,45 @@
-apiVersion: apps/v1  # The API version for deployment resources.
-kind: Deployment  # Indicates that this is a Deployment resource.
+---
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: mongodb-deployment  # The name of the deployment.
   labels:
-    app: mongodb  # Labels that specify characteristics of the resource.
+    app: mongodb
+  name: mongodb-deployment
 spec:
-  replicas: 1  # The number of pods to run.
+  replicas: 1
   selector:
     matchLabels:
-      app: mongodb  # Selects the pods with the label 'app: mongodb'.
+      app: mongodb
   template:
     metadata:
       labels:
-        app: mongodb  # Labels applied to the pods created by this deployment.
+        app: mongodb
     spec:
       containers:
-      - name: mongodb  # Name of the container in the pod.
-        image: mongo  # Docker image to use for the container.
-        ports:
-        - containerPort: 27017  # The port the container exposes.
-        env:
-        - name: MONGO_INITDB_ROOT_USERNAME  # Environment variable for MongoDB root username.
+      - env:
+        - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mongodb-secret  # Kubernetes secret storing MongoDB credentials.
               key: mongo-root-username
-        - name: MONGO_INITDB_ROOT_PASSWORD  # Environment variable for MongoDB root password.
-          valueFrom: 
-            secretKeyRef:
               name: mongodb-secret
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
               key: mongo-root-password
-        command: ["/bin/sh", "-c"]
-        args:
-          - |
-            rm -rf /data/db/*
-            exec docker-entrypoint.sh mongod
+              name: mongodb-secret
+        image: mongo
+        name: mongodb
+        ports:
+        - containerPort: 27017
       imagePullSecrets:
-      - name: docker-creds  # Secret to use for pulling Docker images from a private registry.
+      - name: docker-creds
 ---
-apiVersion: v1  # API version for service resources.
-kind: Service  # Indicates that this is a Service resource.
+apiVersion: v1
+kind: Service
 metadata:
-  name: mongodb-service  # The name of the service.
+  name: mongodb-service
 spec:
-  selector:
-    app: mongodb  # This service routes traffic to pods with the label 'app: mongodb'.
   ports:
-    - protocol: TCP
-      port: 27017  # The port that the service exposes.
-      targetPort: 27017  # The port on the pod to which the service sends traffic.
+  - port: 27017
+  selector:
+    app: mongodb
