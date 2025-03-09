@@ -34,7 +34,7 @@ spec:
         args:
           - |
             rm -rf /data/db/*
-            exec docker-entrypoint.sh mongo
+            exec docker-entrypoint.sh mongod
       imagePullSecrets:
       - name: docker-creds  # Secret to use for pulling Docker images from a private registry.
 ---
