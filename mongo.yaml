@@ -30,6 +30,11 @@ spec:
             secretKeyRef:
               name: mongodb-secret
               key: mongo-root-password
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            rm -rf /data/db/*
+            exec docker-entrypoint.sh mongo
       imagePullSecrets:
       - name: docker-creds  # Secret to use for pulling Docker images from a private registry.
 ---
