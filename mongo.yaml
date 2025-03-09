@@ -27,7 +27,7 @@ spec:
             secretKeyRef:
               key: mongo-root-password
               name: mongodb-secret
-        image: mongo
+        image: mongo:noble
         name: mongodb
         ports:
         - containerPort: 27017
